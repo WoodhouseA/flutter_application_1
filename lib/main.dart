@@ -13,8 +13,13 @@ class App extends StatelessWidget {
       title: 'Sandwich Shop App',
       home: Scaffold(
         appBar: AppBar(title: const Text('Sandwich Counter')),
-        body: const Center(
-          child: OrderItemDisplay(5, 'Footlong'),
+        body: Center(
+          child: Container(
+            alignment: Alignment.center,
+            width: 300,
+            height: 100,
+            color: Colors.blue,
+            child: const OrderItemDisplay(5, 'Footlong')),
         ),
       ),
     );
