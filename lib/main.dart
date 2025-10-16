@@ -15,8 +15,8 @@ class App extends StatelessWidget {
         appBar: AppBar(title: const Text('Sandwich Counter')),
         body: const Center(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center, // centers vertically
-            crossAxisAlignment: CrossAxisAlignment.center, // centers horizontally
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               SandwhichContainer(5, 'Footlong'),
               SizedBox(height: 20),
