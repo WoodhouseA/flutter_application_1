@@ -17,11 +17,10 @@ class App extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
+            spacing: 20,
             children: [
               SandwhichContainer(5, 'Footlong'),
-              SizedBox(height: 20),
               SandwhichContainer(2, 'Bacon'),
-              SizedBox(height: 20),
               SandwhichContainer(4, 'Club'),
             ],
           ),
