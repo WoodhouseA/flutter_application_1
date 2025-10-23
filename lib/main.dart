@@ -59,8 +59,8 @@ class _OrderScreenState extends State<OrderScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                StyledButton(_increaseQuantity, 'Add'),
-                StyledButton(_decreaseQuantity, 'Remove'),
+                StyledButton(_increaseQuantity, ' + Add'),
+                StyledButton(_decreaseQuantity, ' - Remove'),
               ],
             ),
           ],
@@ -81,7 +81,7 @@ class StyledButton extends StatelessWidget {
     return ElevatedButton(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
-        backgroundColor: const Color.fromARGB(255, 0, 4, 255),
+        backgroundColor: const Color.fromARGB(255, 0, 217, 255),
         foregroundColor: const Color.fromARGB(255, 0, 0, 0),
       ),
       child: Text(text),
