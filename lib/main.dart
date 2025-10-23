@@ -14,55 +14,21 @@ class App extends StatelessWidget {
       home: Scaffold(
         appBar: AppBar(title: const Text('Sandwich Counter')),
         body: const Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            spacing: 20,
-            children: [
-              SandwhichContainer(5, 'Footlong'),
-              SandwhichContainer(2, 'Bacon'),
-              SandwhichContainer(4, 'Club'),
-            ],
-          ),
+          child: OrderItemDisplay(5, 'Footlong'),
         ),
       ),
     );
   }
 }
 
-class SandwhichContainer extends StatelessWidget {
-  final String itemType;
-  final int quantity;
-
-  const SandwhichContainer(this.quantity, this.itemType, {super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.center,
-      width: 300,
-      height: 100,
-      color: Colors.blue,
-      child: OrderItemDisplay(quantity, itemType),
-    );
-  }
-}
-
 class OrderItemDisplay extends StatelessWidget {
-  final String itemType;
   final int quantity;
+  final String itemType;
 
   const OrderItemDisplay(this.quantity, this.itemType, {super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Text(
-      '$quantity $itemType sandwich(es): ${'🥪' * quantity}',
-      style: const TextStyle(
-        fontSize: 15,
-        color: Colors.white,
-        fontWeight: FontWeight.bold,
-      ),
-    );
+    return Text('$quantity $itemType sandwich(es): ${'🥪' * quantity}');
   }
 }
