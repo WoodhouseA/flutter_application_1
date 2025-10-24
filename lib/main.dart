@@ -31,6 +31,7 @@ class OrderScreen extends StatefulWidget {
 
 class _OrderScreenState extends State<OrderScreen> {
   int _quantity = 0;
+  SandwichType _selectedType = SandwichType.footlong;
   final _notesController = TextEditingController();
 
   void _increaseQuantity() {
@@ -61,10 +62,22 @@ class _OrderScreenState extends State<OrderScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            OrderItemDisplay(
-              _quantity,
-              'Footlong',
+            SegmentedButton<SandwichType>(
+              segments: const <ButtonSegment<SandwichType>>[
+                ButtonSegment<SandwichType>(
+                    value: SandwichType.footlong, label: Text('Footlong')),
+                ButtonSegment<SandwichType>(
+                    value: SandwichType.sixInch, label: Text('Six Inch')),
+              ],
+              selected: <SandwichType>{_selectedType},
+              onSelectionChanged: (Set<SandwichType> newSelection) {
+                setState(() {
+                  _selectedType = newSelection.first;
+                });
+              },
             ),
+            OrderItemDisplay(_quantity, _selectedType == SandwichType.footlong ? 'Footlong' : 'Six Inch'),
+            const SizedBox(height: 10),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
               child: TextField(
