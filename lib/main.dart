@@ -16,6 +16,8 @@ class App extends StatelessWidget {
   }
 }
 
+enum SandwichType { footlong, sixInch }
+
 class OrderScreen extends StatefulWidget {
   final int maxQuantity;
 
@@ -84,6 +86,8 @@ class _OrderScreenState extends State<OrderScreen> {
                     _quantity > 0 ? _decreaseQuantity : null, ' - Remove'),
               ],
             ),
+            const SizedBox(height: 20),
+            Text('Special Notes: ${_notesController.text}'),
           ],
         ),
       ),
