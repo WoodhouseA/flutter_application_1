@@ -77,8 +77,11 @@ class _OrderScreenState extends State<OrderScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                StyledButton(_increaseQuantity, ' + Add'),
-                StyledButton(_decreaseQuantity, ' - Remove'),
+                StyledButton(
+                    _quantity < widget.maxQuantity ? _increaseQuantity : null,
+                    ' + Add'),
+                StyledButton(
+                    _quantity > 0 ? _decreaseQuantity : null, ' - Remove'),
               ],
             ),
           ],
@@ -89,7 +92,7 @@ class _OrderScreenState extends State<OrderScreen> {
 }
 
 class StyledButton extends StatelessWidget {
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final String text;
 
   const StyledButton(this.onPressed, this.text, {super.key});
