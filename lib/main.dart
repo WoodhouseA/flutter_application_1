@@ -16,8 +16,6 @@ class App extends StatelessWidget {
   }
 }
 
-enum SandwichType { footlong, sixInch }
-
 class OrderScreen extends StatefulWidget {
   final int maxQuantity;
 
@@ -31,8 +29,6 @@ class OrderScreen extends StatefulWidget {
 
 class _OrderScreenState extends State<OrderScreen> {
   int _quantity = 0;
-  SandwichType _selectedType = SandwichType.footlong;
-  final _notesController = TextEditingController();
 
   void _increaseQuantity() {
     if (_quantity < widget.maxQuantity) {
@@ -47,12 +43,6 @@ class _OrderScreenState extends State<OrderScreen> {
   }
 
   @override
-  void dispose() {
-    _notesController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -62,67 +52,26 @@ class _OrderScreenState extends State<OrderScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            SegmentedButton<SandwichType>(
-              segments: const <ButtonSegment<SandwichType>>[
-                ButtonSegment<SandwichType>(
-                    value: SandwichType.footlong, label: Text('Footlong')),
-                ButtonSegment<SandwichType>(
-                    value: SandwichType.sixInch, label: Text('Six Inch')),
-              ],
-              selected: <SandwichType>{_selectedType},
-              onSelectionChanged: (Set<SandwichType> newSelection) {
-                setState(() {
-                  _selectedType = newSelection.first;
-                });
-              },
-            ),
-            OrderItemDisplay(_quantity, _selectedType == SandwichType.footlong ? 'Footlong' : 'Six Inch'),
-            const SizedBox(height: 10),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
-              child: TextField(
-                controller: _notesController,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Add a note',
-                  hintText: 'e.g., no onions, extra pickles',
-                ),
-              ),
+            OrderItemDisplay(
+              _quantity,
+              'Footlong',
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                StyledButton(
-                    _quantity < widget.maxQuantity ? _increaseQuantity : null,
-                    ' + Add'),
-                StyledButton(
-                    _quantity > 0 ? _decreaseQuantity : null, ' - Remove'),
+                ElevatedButton(
+                  onPressed: _increaseQuantity,
+                  child: const Text('Add'),
+                ),
+                ElevatedButton(
+                  onPressed: _decreaseQuantity,
+                  child: const Text('Remove'),
+                ),
               ],
             ),
-            const SizedBox(height: 20),
-            Text('Special Notes: ${_notesController.text}'),
           ],
         ),
       ),
-    );
-  }
-}
-
-class StyledButton extends StatelessWidget {
-  final VoidCallback? onPressed;
-  final String text;
-
-  const StyledButton(this.onPressed, this.text, {super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: onPressed,
-      style: ElevatedButton.styleFrom(
-        backgroundColor: const Color.fromARGB(255, 0, 217, 255),
-        foregroundColor: const Color.fromARGB(255, 0, 0, 0),
-      ),
-      child: Text(text),
     );
   }
 }
