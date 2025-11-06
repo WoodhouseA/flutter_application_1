@@ -228,6 +228,16 @@ class OrderItemDisplay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text('$quantity $itemType sandwich(es): ${'🥪' * quantity}');
+    final String breadName = breadType.name;
+    final String sandwiches = '🥪' * quantity;
+
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text('$quantity $breadName $itemType sandwich(es): $sandwiches', style: normalText),
+        Text('Note: $orderNote', style: normalText),
+      ],
+    );
   }
 }
