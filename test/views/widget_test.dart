@@ -99,6 +99,15 @@ void main() {
       expect(find.text('Test Add'), findsOneWidget);
       expect(find.byType(ElevatedButton), findsOneWidget);
     });
+
+    testWidgets('changes sandwich type with switch', (WidgetTester tester) async {
+      await tester.pumpWidget(const App());
+      expect(find.textContaining('footlong sandwich'), findsOneWidget);
+      await tester.tap(find.byType(Switch));
+      await tester.pumpAndSettle();
+      expect(find.textContaining('six-inch sandwich'), findsOneWidget);
+    });
+
   });
 
   group('OrderItemDisplay', () {
