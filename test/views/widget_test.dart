@@ -108,11 +108,22 @@ void main() {
 
     testWidgets('changes sandwich type with switch',
         (WidgetTester tester) async {
+      const testKey = Key('sandwich_type_switch');
       await tester.pumpWidget(const App());
       expect(find.textContaining('footlong sandwich'), findsOneWidget);
-      await tester.tap(find.byType(Switch).first);
+      await tester.tap(find.byKey(testKey));
       await tester.pumpAndSettle();
       expect(find.textContaining('six-inch sandwich'), findsOneWidget);
+    });
+
+    testWidgets('changes toasted status with switch',
+        (WidgetTester tester) async {
+      const testKey = Key('toasted_switch');
+      await tester.pumpWidget(const App());
+      expect(find.textContaining('0 untoasted white footlong sandwich(es): '), findsOneWidget);
+      await tester.tap(find.byKey(testKey));
+      await tester.pumpAndSettle();
+      expect(find.textContaining('0 toasted white footlong sandwich(es): '), findsOneWidget);
     });
 
     group('OrderItemDisplay', () {
