@@ -14,7 +14,8 @@ void main() {
     testWidgets('shows initial quantity and title',
         (WidgetTester tester) async {
       await tester.pumpWidget(const App());
-  expect(find.text('0 untoasted white footlong sandwich(es): '), findsOneWidget);
+      expect(find.text('0 untoasted white footlong sandwich(es): '),
+          findsOneWidget);
       expect(find.text('Sandwich Counter'), findsOneWidget);
     });
 
@@ -23,7 +24,8 @@ void main() {
       await tester.pumpWidget(const App());
       await tester.tap(find.widgetWithText(ElevatedButton, 'Add'));
       await tester.pump();
-  expect(find.text('1 untoasted white footlong sandwich(es): 🥪'), findsOneWidget);
+      expect(find.text('1 untoasted white footlong sandwich(es): 🥪'),
+          findsOneWidget);
     });
 
     testWidgets('decrements quantity when Remove is tapped',
@@ -31,18 +33,22 @@ void main() {
       await tester.pumpWidget(const App());
       await tester.tap(find.widgetWithText(ElevatedButton, 'Add'));
       await tester.pump();
-  expect(find.text('1 untoasted white footlong sandwich(es): 🥪'), findsOneWidget);
+      expect(find.text('1 untoasted white footlong sandwich(es): 🥪'),
+          findsOneWidget);
       await tester.tap(find.widgetWithText(ElevatedButton, 'Remove'));
       await tester.pump();
-  expect(find.text('0 untoasted white footlong sandwich(es): '), findsOneWidget);
+      expect(find.text('0 untoasted white footlong sandwich(es): '),
+          findsOneWidget);
     });
 
     testWidgets('does not decrement below zero', (WidgetTester tester) async {
       await tester.pumpWidget(const App());
-      expect(find.text('0 untoasted white footlong sandwich(es): '), findsOneWidget);
+      expect(find.text('0 untoasted white footlong sandwich(es): '),
+          findsOneWidget);
       await tester.tap(find.widgetWithText(ElevatedButton, 'Remove'));
       await tester.pump();
-      expect(find.text('0 untoasted white footlong sandwich(es): '), findsOneWidget);
+      expect(find.text('0 untoasted white footlong sandwich(es): '),
+          findsOneWidget);
     });
 
     testWidgets('does not increment above maxQuantity',
@@ -52,8 +58,8 @@ void main() {
         await tester.tap(find.widgetWithText(ElevatedButton, 'Add'));
         await tester.pump();
       }
-    expect(find.text('5 untoasted white footlong sandwich(es): 🥪🥪🥪🥪🥪'),
-      findsOneWidget);
+      expect(find.text('5 untoasted white footlong sandwich(es): 🥪🥪🥪🥪🥪'),
+          findsOneWidget);
     });
   });
 
@@ -100,7 +106,8 @@ void main() {
       expect(find.byType(ElevatedButton), findsOneWidget);
     });
 
-    testWidgets('changes sandwich type with switch', (WidgetTester tester) async {
+    testWidgets('changes sandwich type with switch',
+        (WidgetTester tester) async {
       await tester.pumpWidget(const App());
       expect(find.textContaining('footlong sandwich'), findsOneWidget);
       await tester.tap(find.byType(Switch).first);
@@ -108,77 +115,78 @@ void main() {
       expect(find.textContaining('six-inch sandwich'), findsOneWidget);
     });
 
-  });
+    group('OrderItemDisplay', () {
+      testWidgets('shows correct text and note for zero sandwiches',
+          (WidgetTester tester) async {
+        const widgetToBeTested = OrderItemDisplay(
+          quantity: 0,
+          itemType: 'footlong',
+          breadType: BreadType.white,
+          orderNote: 'No notes added.',
+          isToasted: false,
+        );
+        const testApp = MaterialApp(
+          home: Scaffold(body: widgetToBeTested),
+        );
+        await tester.pumpWidget(testApp);
+        expect(find.text('0 untoasted white footlong sandwich(es): '),
+            findsOneWidget);
+        expect(find.text('Note: No notes added.'), findsOneWidget);
+      });
 
-  group('OrderItemDisplay', () {
-    testWidgets('shows correct text and note for zero sandwiches',
-        (WidgetTester tester) async {
-      const widgetToBeTested = OrderItemDisplay(
-        quantity: 0,
-        itemType: 'footlong',
-        breadType: BreadType.white,
-        orderNote: 'No notes added.', 
-        isToasted: false,
-      );
-      const testApp = MaterialApp(
-        home: Scaffold(body: widgetToBeTested),
-      );
-      await tester.pumpWidget(testApp);
-      expect(find.text('0 untoasted white footlong sandwich(es): '), findsOneWidget);
-      expect(find.text('Note: No notes added.'), findsOneWidget);
-    });
+      testWidgets('shows correct text and emoji for three sandwiches',
+          (WidgetTester tester) async {
+        const widgetToBeTested = OrderItemDisplay(
+          quantity: 3,
+          itemType: 'footlong',
+          breadType: BreadType.white,
+          orderNote: 'No notes added.',
+          isToasted: true,
+        );
+        const testApp = MaterialApp(
+          home: Scaffold(body: widgetToBeTested),
+        );
+        await tester.pumpWidget(testApp);
+        expect(find.text('3 toasted white footlong sandwich(es): 🥪🥪🥪'),
+            findsOneWidget);
+        expect(find.text('Note: No notes added.'), findsOneWidget);
+      });
 
-    testWidgets('shows correct text and emoji for three sandwiches',
-        (WidgetTester tester) async {
-      const widgetToBeTested = OrderItemDisplay(
-        quantity: 3,
-        itemType: 'footlong',
-        breadType: BreadType.white,
-        orderNote: 'No notes added.',
-        isToasted: true,
-      );
-      const testApp = MaterialApp(
-        home: Scaffold(body: widgetToBeTested),
-      );
-    await tester.pumpWidget(testApp);
-    expect(
-      find.text('3 toasted white footlong sandwich(es): 🥪🥪🥪'), findsOneWidget);
-      expect(find.text('Note: No notes added.'), findsOneWidget);
-    });
+      testWidgets('shows correct bread and type for two six-inch wheat',
+          (WidgetTester tester) async {
+        const widgetToBeTested = OrderItemDisplay(
+          quantity: 2,
+          itemType: 'six-inch',
+          breadType: BreadType.wheat,
+          orderNote: 'No pickles',
+          isToasted: false,
+        );
+        const testApp = MaterialApp(
+          home: Scaffold(body: widgetToBeTested),
+        );
+        await tester.pumpWidget(testApp);
+        expect(find.text('2 untoasted wheat six-inch sandwich(es): 🥪🥪'),
+            findsOneWidget);
+        expect(find.text('Note: No pickles'), findsOneWidget);
+      });
 
-    testWidgets('shows correct bread and type for two six-inch wheat',
-        (WidgetTester tester) async {
-      const widgetToBeTested = OrderItemDisplay(
-        quantity: 2,
-        itemType: 'six-inch',
-        breadType: BreadType.wheat,
-        orderNote: 'No pickles',
-        isToasted: false,
-      );
-      const testApp = MaterialApp(
-        home: Scaffold(body: widgetToBeTested),
-      );
-      await tester.pumpWidget(testApp);
-      expect(find.text('2 untoasted wheat six-inch sandwich(es): 🥪🥪'), findsOneWidget);
-      expect(find.text('Note: No pickles'), findsOneWidget);
-    });
-
-    testWidgets('shows correct bread and type for one wholemeal footlong',
-        (WidgetTester tester) async {
-      const widgetToBeTested = OrderItemDisplay(
-        quantity: 1,
-        itemType: 'footlong',
-        breadType: BreadType.wholemeal,
-        orderNote: 'Lots of lettuce',
-        isToasted: true,
-      );
-      const testApp = MaterialApp(
-        home: Scaffold(body: widgetToBeTested),
-      );
-    await tester.pumpWidget(testApp);
-    expect(
-      find.text('1 toasted wholemeal footlong sandwich(es): 🥪'), findsOneWidget);
-      expect(find.text('Note: Lots of lettuce'), findsOneWidget);
+      testWidgets('shows correct bread and type for one wholemeal footlong',
+          (WidgetTester tester) async {
+        const widgetToBeTested = OrderItemDisplay(
+          quantity: 1,
+          itemType: 'footlong',
+          breadType: BreadType.wholemeal,
+          orderNote: 'Lots of lettuce',
+          isToasted: true,
+        );
+        const testApp = MaterialApp(
+          home: Scaffold(body: widgetToBeTested),
+        );
+        await tester.pumpWidget(testApp);
+        expect(find.text('1 toasted wholemeal footlong sandwich(es): 🥪'),
+            findsOneWidget);
+        expect(find.text('Note: Lots of lettuce'), findsOneWidget);
+      });
     });
   });
 }
