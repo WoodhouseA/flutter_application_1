@@ -35,7 +35,7 @@ void main() {
       await tester.pumpWidget(const App());
       
       // Tap the bread type dropdown
-      await tester.tap(find.widgetWithText(DropdownMenu<BreadType>, 'Bread Type'));
+      await tester.tap(find.byType(DropdownMenu<BreadType>));
       await tester.pumpAndSettle(); // Wait for animation
 
       // Select a new bread type
