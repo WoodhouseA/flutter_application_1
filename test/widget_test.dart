@@ -17,7 +17,10 @@ void main() {
       await tester.pumpWidget(const App());
       
       // Find the initial state of the image before interaction
-      final initialImage = tester.widget<Image>(find.byType(Image));
+      final initialImage = tester.widget<Image>(
+          find.byWidgetPredicate((widget) =>
+              widget is Image &&
+              (widget.image as AssetImage).assetName.contains('footlong')));
       expect(initialImage.image, isA<AssetImage>());
       expect((initialImage.image as AssetImage).assetName, contains('footlong'));
 
@@ -25,7 +28,10 @@ void main() {
       await tester.tap(find.byType(Switch));
       await tester.pump();
 
-      final updatedImage = tester.widget<Image>(find.byType(Image));
+      final updatedImage = tester.widget<Image>(
+          find.byWidgetPredicate((widget) =>
+              widget is Image &&
+              (widget.image as AssetImage).assetName.contains('six_inch')));
       expect(updatedImage.image, isA<AssetImage>());
       expect((updatedImage.image as AssetImage).assetName, contains('six_inch'));
     });
@@ -36,14 +42,11 @@ void main() {
       
       // Tap the bread type dropdown
       await tester.tap(find.byType(DropdownMenu<BreadType>));
-      await tester.pumpAndSettle(); // Wait for animation
+      await tester.pumpAndSettle();
 
       // Select a new bread type
       await tester.tap(find.text('wheat').last);
       await tester.pumpAndSettle();
-
-      // No direct visual feedback to test in UI for bread type, but this confirms interaction.
-      // A more robust test would check the state if it were exposed.
     });
   });
 
