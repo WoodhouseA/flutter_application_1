@@ -27,8 +27,12 @@ class Cart extends ChangeNotifier {
     notifyListeners();
   }
 
-  int get totalQuantity {
-    return _items.values.fold(0, (sum, quantity) => sum + quantity);
+  double getItemPrice(Sandwich sandwich) {
+    final quantity = _items[sandwich] ?? 0;
+    return _pricingRepository.calculatePrice(
+      quantity: quantity,
+      isFootlong: sandwich.isFootlong,
+    );
   }
 
   double get totalPrice {
