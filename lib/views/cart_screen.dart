@@ -30,10 +30,11 @@ class CartScreen extends StatelessWidget {
                   itemBuilder: (context, index) {
                     Sandwich sandwich = cart.items.keys.elementAt(index);
                     int quantity = cart.items[sandwich]!;
+                    double itemPrice = cart.getItemPrice(sandwich);
                     return ListTile(
                       title: Text(sandwich.name),
                       subtitle: Text(
-                          '${sandwich.isFootlong ? 'Footlong' : 'Six-inch'}, on ${sandwich.breadType.name} bread'),
+                          '${sandwich.isFootlong ? 'Footlong' : 'Six-inch'}, on ${sandwich.breadType.name} bread\nPrice: £${itemPrice.toStringAsFixed(2)}'),
                       trailing: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
@@ -65,13 +66,13 @@ class CartScreen extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.all(16.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                child: Column(
                   children: [
                     Text(
                       'Total: \$${cart.totalPrice.toStringAsFixed(2)}',
                       style: heading2,
                     ),
+                    const SizedBox(height: 10),
                     ElevatedButton(
                       onPressed: () {
                         // Placeholder for checkout
