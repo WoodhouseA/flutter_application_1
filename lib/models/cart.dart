@@ -8,8 +8,9 @@ class Cart extends ChangeNotifier {
 
   Map<Sandwich, int> get items => _items;
 
-  void addToCart(Sandwich sandwich) {
-    _items.update(sandwich, (value) => value + 1, ifAbsent: () => 1);
+  void addToCart(Sandwich sandwich, {int quantity = 1}) {
+    _items.update(sandwich, (value) => value + quantity,
+        ifAbsent: () => quantity);
     notifyListeners();
   }
 
