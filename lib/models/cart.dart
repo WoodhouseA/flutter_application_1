@@ -27,6 +27,10 @@ class Cart extends ChangeNotifier {
     notifyListeners();
   }
 
+  int get totalQuantity {
+    return _items.values.fold(0, (sum, quantity) => sum + quantity);
+  }
+
   double get totalPrice {
     double total = 0;
     _items.forEach((sandwich, quantity) {
