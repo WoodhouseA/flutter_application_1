@@ -40,9 +40,11 @@ class CartScreen extends StatelessWidget {
                         children: [
                           IconButton(
                             icon: const Icon(Icons.remove),
-                            onPressed: () {
-                              cart.updateQuantity(sandwich, quantity - 1);
-                            },
+                            onPressed: quantity > 1
+                                ? () {
+                                    cart.updateQuantity(sandwich, quantity - 1);
+                                  }
+                                : null,
                           ),
                           Text('$quantity'),
                           IconButton(
