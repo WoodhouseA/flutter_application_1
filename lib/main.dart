@@ -78,7 +78,7 @@ class _OrderScreenState extends State<OrderScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(confirmationMessage),
-          duration: const Duration(seconds: 5),
+          duration: const Duration(seconds: 3),
         ),
       );
     }
