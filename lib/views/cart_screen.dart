@@ -1,97 +1,95 @@
 import 'package:flutter/material.dart';
+import 'package:sandwich_shop/views/app_styles.dart';
+import 'package:sandwich_shop/views/order_screen.dart';
 import 'package:sandwich_shop/models/cart.dart';
 import 'package:sandwich_shop/models/sandwich.dart';
-import 'package:sandwich_shop/views/app_styles.dart';
+import 'package:sandwich_shop/repositories/pricing_repository.dart';
 
-class CartScreen extends StatelessWidget {
+class CartScreen extends StatefulWidget {
   final Cart cart;
 
   const CartScreen({super.key, required this.cart});
 
   @override
+  State<CartScreen> createState() {
+    return _CartScreenState();
+  }
+}
+
+class _CartScreenState extends State<CartScreen> {
+  void _goBack() {
+    Navigator.pop(context);
+  }
+
+  String _getSizeText(bool isFootlong) {
+    if (isFootlong) {
+      return 'Footlong';
+    } else {
+      return 'Six-inch';
+    }
+  }
+
+  double _getItemPrice(Sandwich sandwich, int quantity) {
+    final PricingRepository pricingRepository = PricingRepository();
+    return pricingRepository.calculatePrice(
+      quantity: quantity,
+      isFootlong: sandwich.isFootlong,
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Your Cart', style: heading1),
+        leading: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: SizedBox(
+            height: 100,
+            child: Image.asset('assets/images/logo.png'),
+          ),
+        ),
+        title: const Text(
+          'Cart View',
+          style: heading1,
+        ),
       ),
-      body: AnimatedBuilder(
-        animation: cart,
-        builder: (context, child) {
-          if (cart.items.isEmpty) {
-            return const Center(
-              child: Text('Your cart is empty.', style: normalText),
-            );
-          }
-          return Column(
+      body: Center(
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Expanded(
-                child: ListView.builder(
-                  itemCount: cart.items.length,
-                  itemBuilder: (context, index) {
-                    Sandwich sandwich = cart.items.keys.elementAt(index);
-                    int quantity = cart.items[sandwich]!;
-                    double itemPrice = cart.getItemPrice(sandwich);
-                    return ListTile(
-                      title: Text(sandwich.name),
-                      subtitle: Text(
-                          '${sandwich.isFootlong ? 'Footlong' : 'Six-inch'}, on ${sandwich.breadType.name} bread\nPrice: £${itemPrice.toStringAsFixed(2)}'),
-                      trailing: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          IconButton(
-                            icon: const Icon(Icons.remove),
-                            onPressed: quantity > 1
-                                ? () {
-                                    cart.updateQuantity(sandwich, quantity - 1);
-                                  }
-                                : null,
-                          ),
-                          Text('$quantity'),
-                          IconButton(
-                            icon: const Icon(Icons.add),
-                            onPressed: () {
-                              cart.updateQuantity(sandwich, quantity + 1);
-                            },
-                          ),
-                          IconButton(
-                            icon: const Icon(Icons.delete),
-                            color: Colors.red,
-                            onPressed: () {
-                              cart.removeFromCart(sandwich);
-                            },
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
+              const SizedBox(height: 20),
+              for (MapEntry<Sandwich, int> entry in widget.cart.items.entries)
+                Column(
                   children: [
+                    Text(entry.key.name, style: heading2),
                     Text(
-                      'Total Items: ${cart.totalQuantity}',
-                      style: heading2,
+                      '${_getSizeText(entry.key.isFootlong)} on ${entry.key.breadType.name} bread',
+                      style: normalText,
                     ),
-                    const SizedBox(height: 10),
                     Text(
-                      'Total: £${cart.totalPrice.toStringAsFixed(2)}',
-                      style: heading2,
+                      'Qty: ${entry.value} - £${_getItemPrice(entry.key, entry.value).toStringAsFixed(2)}',
+                      style: normalText,
                     ),
-                    const SizedBox(height: 10),
-                    ElevatedButton(
-                      onPressed: () {
-                        // Placeholder for checkout
-                      },
-                      child: const Text('Checkout'),
-                    ),
+                    const SizedBox(height: 20),
                   ],
                 ),
+              Text(
+                'Total: £${widget.cart.totalPrice.toStringAsFixed(2)}',
+                style: heading2,
+                textAlign: TextAlign.center,
               ),
+              const SizedBox(height: 20),
+              StyledButton(
+                onPressed: _goBack,
+                icon: Icons.arrow_back,
+                label: 'Back to Order',
+                backgroundColor: Colors.grey,
+              ),
+              const SizedBox(height: 20),
             ],
-          );
-        },
+          ),
+        ),
       ),
     );
   }

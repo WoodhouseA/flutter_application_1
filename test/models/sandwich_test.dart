@@ -2,9 +2,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sandwich_shop/models/sandwich.dart';
 
 void main() {
-  group('Sandwich Model', () {
-    test('Constructor initializes properties correctly', () {
-      final sandwich = Sandwich(
+  group('Sandwich', () {
+    test('should create a Sandwich with correct properties', () {
+      final Sandwich sandwich = Sandwich(
         type: SandwichType.veggieDelight,
         isFootlong: true,
         breadType: BreadType.wholemeal,
@@ -13,62 +13,55 @@ void main() {
       expect(sandwich.type, SandwichType.veggieDelight);
       expect(sandwich.isFootlong, isTrue);
       expect(sandwich.breadType, BreadType.wholemeal);
+      expect(sandwich.name, 'Veggie Delight');
+      expect(sandwich.image, 'assets/images/veggieDelight_footlong.png');
     });
 
-    group('name getter', () {
-      test('should return "Veggie Delight" for SandwichType.veggieDelight', () {
-        final sandwich = Sandwich(
-            type: SandwichType.veggieDelight,
-            isFootlong: false,
-            breadType: BreadType.white);
-        expect(sandwich.name, 'Veggie Delight');
-      });
-
-      test(
-          'should return "Chicken Teriyaki" for SandwichType.chickenTeriyaki',
-          () {
-        final sandwich = Sandwich(
-            type: SandwichType.chickenTeriyaki,
-            isFootlong: false,
-            breadType: BreadType.white);
-        expect(sandwich.name, 'Chicken Teriyaki');
-      });
-
-      test('should return "Tuna Melt" for SandwichType.tunaMelt', () {
-        final sandwich = Sandwich(
-            type: SandwichType.tunaMelt,
-            isFootlong: false,
-            breadType: BreadType.white);
-        expect(sandwich.name, 'Tuna Melt');
-      });
-
-      test(
-          'should return "Meatball Marinara" for SandwichType.meatballMarinara',
-          () {
-        final sandwich = Sandwich(
-            type: SandwichType.meatballMarinara,
-            isFootlong: false,
-            breadType: BreadType.white);
-        expect(sandwich.name, 'Meatball Marinara');
-      });
+    test('should support all BreadType enum values', () {
+      for (final BreadType bread in BreadType.values) {
+        final Sandwich sandwich = Sandwich(
+          type: SandwichType.tunaMelt,
+          isFootlong: false,
+          breadType: bread,
+        );
+        expect(sandwich.breadType, bread);
+      }
     });
 
-    group('image getter', () {
-      test('should return correct image path for a six-inch sandwich', () {
-        final sandwich = Sandwich(
-            type: SandwichType.veggieDelight,
-            isFootlong: false,
-            breadType: BreadType.wheat);
-        expect(sandwich.image, 'assets/images/veggieDelight_six_inch.png');
-      });
+    test('should support all SandwichType enum values and correct names', () {
+      final Map<SandwichType, String> expectedNames = {
+        SandwichType.veggieDelight: 'Veggie Delight',
+        SandwichType.chickenTeriyaki: 'Chicken Teriyaki',
+        SandwichType.tunaMelt: 'Tuna Melt',
+        SandwichType.meatballMarinara: 'Meatball Marinara',
+      };
+      for (final SandwichType type in SandwichType.values) {
+        final Sandwich sandwich = Sandwich(
+          type: type,
+          isFootlong: false,
+          breadType: BreadType.white,
+        );
+        expect(sandwich.type, type);
+        expect(sandwich.name, expectedNames[type]);
+      }
+    });
 
-      test('should return correct image path for a footlong sandwich', () {
-        final sandwich = Sandwich(
-            type: SandwichType.chickenTeriyaki,
-            isFootlong: true,
-            breadType: BreadType.wheat);
-        expect(sandwich.image, 'assets/images/chickenTeriyaki_footlong.png');
-      });
+    test('should generate correct image path for footlong', () {
+      final Sandwich sandwich = Sandwich(
+        type: SandwichType.chickenTeriyaki,
+        isFootlong: true,
+        breadType: BreadType.wheat,
+      );
+      expect(sandwich.image, 'assets/images/chickenTeriyaki_footlong.png');
+    });
+
+    test('should generate correct image path for six inch', () {
+      final Sandwich sandwich = Sandwich(
+        type: SandwichType.meatballMarinara,
+        isFootlong: false,
+        breadType: BreadType.white,
+      );
+      expect(sandwich.image, 'assets/images/meatballMarinara_six_inch.png');
     });
   });
 }
