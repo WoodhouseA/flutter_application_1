@@ -1,17 +1,18 @@
-
 # Sandwich Shop App
 
-A small Flutter demo app for counting and configuring sandwich orders. The app demonstrates a simple stateful UI with quantity controls, sandwich size toggle (six-inch / footlong), bread selection, and an order note input.
+A Flutter app for ordering sandwiches. The app demonstrates a simple stateful UI with sandwich selection, quantity controls, size toggles, bread choices, and a shopping cart.
 
 > Note: This project was scaffolded for learning/demo purposes. It focuses on UI/state handling and does not include backend persistence or payment flows.
 
 ## Key Features
 
-- Increment and decrement sandwich quantity with max/min limits.
+- Select from a variety of sandwich types.
+- View an image for each type of sandwich.
+- Increment and decrement sandwich quantity.
 - Toggle between six-inch and footlong sandwich sizes.
-- Choose a bread type from a dropdown (white, wheat, wholemeal).
-- Add an order note (example: "no onions").
-- Simple visual display of sandwiches using emoji and live-updating UI.
+- Choose a bread type from a dropdown (e.g., white, wheat).
+- Add multiple sandwiches to a shopping cart.
+- View all items in the cart on a separate screen.
 
 ## Installation & Setup
 
@@ -48,27 +49,26 @@ flutter run
 flutter run -d windows
 ```
 
-Notes about configuration
-
-- The visible maximum order quantity is set at app startup. In `lib/main.dart` the `OrderScreen` is instantiated with `maxQuantity: 5`. You can adjust that number or rely on the default `OrderScreen(maxQuantity)` parameter.
-
 ## How to Use
 
-Open the app and you'll see:
+Open the app and you'll see the main order screen:
 
-- Current order display (quantity, bread type, sandwich size and notes).
+- An image of the currently selected sandwich.
+- A dropdown to select the sandwich type.
 - A size toggle (six-inch / footlong) implemented with a `Switch`.
 - A dropdown to select bread type.
-- A notes text field for order notes.
-- `Add` and `Remove` buttons to change quantity (subject to min/max limits).
+- `Add` and `Remove` buttons to change the quantity.
+- An "Add to Cart" button to add the configured sandwich to your order.
+- A "View Cart" button to navigate to the cart screen.
 
 Typical flows
 
-- Increase quantity: press the green Add button until the maximum (configurable) is reached.
-- Decrease quantity: press Remove until the quantity reaches 0.
+- Choose a sandwich: select a sandwich from the "Sandwich Type" dropdown.
+- Change quantity: use the `+` and `-` buttons.
 - Change size: flip the Switch between "six-inch" and "footlong".
-- Change bread: select from the dropdown menu.
-- Add a note: type into the notes field; it updates the order display live.
+- Change bread: select from the "Bread Type" dropdown menu.
+- Add to order: press the "Add to Cart" button. A confirmation message will appear.
+- View your order: press the "View Cart" button to see all items you've added.
 
 Running tests
 
@@ -82,18 +82,22 @@ flutter test
 
 Top-level layout (important files/folders):
 
-- `lib/main.dart` — The main app entry. Contains `OrderScreen`, UI widgets, and wiring. (Key: `OrderScreen(maxQuantity: 5)`).
-- `lib/repositories/order_repository.dart` — Simple repository that manages the order quantity and max limit.
+- `lib/main.dart` — The main app entry. Contains `OrderScreen` and UI widgets.
+- `lib/models/sandwich.dart` — Defines the `Sandwich` data model and related enums.
+- `lib/models/cart.dart` — Manages the state of the shopping cart.
+- `lib/views/cart_screen.dart` — The screen that displays the contents of the shopping cart.
 - `lib/views/app_styles.dart` — Shared text styles used by the UI.
+- `assets/sandwiches.json` — A JSON file containing data for the available sandwiches.
+- `assets/images/` — Contains the images for each sandwich.
 - `pubspec.yaml` — Flutter project manifest and dependency list.
-- `test/` — Unit tests (if present) for repositories and views.
+- `test/` — Unit and widget tests.
 
 You can inspect and extend these files to add new behavior, persistence, or network-backed order submission.
 
 ## Technologies & Dependencies
 
 - Flutter (Dart)
-- Uses core Flutter widgets only (no third-party packages required in current codebase).
+- Uses core Flutter widgets only (no third-party packages required).
 
 ## Known Limitations & Future Improvements
 
@@ -105,7 +109,6 @@ Planned / suggested improvements
 
 - Persist orders locally (SQLite / shared_preferences).
 - Add an order confirmation screen and submit to a backend API.
-- Add images for bread types and better visual design.
 - Add integration tests and widget tests for UI flows.
 
 ## Contribution
